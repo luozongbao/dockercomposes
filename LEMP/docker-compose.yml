@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: nginx
+    image: nginx:stable-alpine
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+      - php
+    ports:
+      - 80:80
+    volumes:
+      - ./project:/var/www/html
+      - ./conf.d:/etc/nginx/conf.d
+  php:
+    container_name: php
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    depends_on:
+      - mariadb
+    restart: unless-stopped
+    volumes:
+      - ./project:/var/www/html
+    expose:
+      - 9000
+  mariadb:
+    container_name: mariadb
+    image: mariadb:10.9.3
+    restart: unless-stopped
+    volumes:
+      - data:/var/lib/mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: r00tP@ssw0rd
+      MARIADB_DATABASE: db
+      MARIADB_USER: user
+      MARIADB_PASSWORD: P@ssw0rd
+volumes:
+  data:
