@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  database:
+    container_name: mariadb
+    image: mariadb:10.9.3
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      MARIADB_ROOT_PASSWORD: r00tP@ssw0rd
+      MARIADB_DATABASE: wpdb
+      MARIADB_USER: wpdbuser
+      MARIADB_PASSWORD: P@ssw0rd
+    volumes:
+      - wpdata:/var/lib/mysql
+  wordpress:
+    container_name: wordpress
+    depends_on:
+      - database
+    image: wordpress:latest
+    restart: unless-stopped
+    ports:
+      - 80:80
+    environment:
+      WORDPRESS_DB_HOST: database
+      WORDPRESS_DB_NAME: wpdb
+      WORDPRESS_DB_USER: wpdbuser
+      WORDPRESS_DB_PASSWORD: P@ssw0rd
+volumes:
+  wpdata:
