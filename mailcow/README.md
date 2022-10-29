@@ -1,6 +1,6 @@
 # MailCow
 
-is a mail system that has been dockerized to be 
+is a mail system that has been dockerized and has free community support.  To support the team please visit their website [https://mailcow.email/](https://mailcow.email/) 
 
 ## Overview
 The integrated mailcow UI allows administrative work on your mail server instance as well as separated domain administrator and mailbox user access:
@@ -42,5 +42,6 @@ mailcow: dockerized comes with multiple containers linked in one bridged network
 - A Watchdog to provide basic monitoring
 
 ## More information about MailCow
-- more about [MailCow](https://docs.mailcow.email/)
+- Official [MailCow website](https://mailcow.email/)
+- more Documentation about [MailCow Documentation](https://docs.mailcow.email/)
 - Dockerized MailCow is saved at [Github](https://github.com/mailcow/mailcow-dockerized)
