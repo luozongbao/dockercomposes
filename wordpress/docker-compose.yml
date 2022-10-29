@@ -8,10 +8,10 @@ services:
     ports:
       - 3306:3306
     environment:
-      MARIADB_ROOT_PASSWORD: r00tP@ssw0rd
-      MARIADB_DATABASE: wpdb
-      MARIADB_USER: wpdbuser
-      MARIADB_PASSWORD: P@ssw0rd
+      MARIADB_ROOT_PASSWORD: ${ROOTPASSWORD}
+      MARIADB_DATABASE: ${DATABASE}
+      MARIADB_USER: ${DATABASEUSER}
+      MARIADB_PASSWORD: ${PASSWORD}
     volumes:
       - wpdata:/var/lib/mysql
   wordpress:
@@ -24,8 +24,8 @@ services:
       - 80:80
     environment:
       WORDPRESS_DB_HOST: database
-      WORDPRESS_DB_NAME: wpdb
-      WORDPRESS_DB_USER: wpdbuser
-      WORDPRESS_DB_PASSWORD: P@ssw0rd
+      WORDPRESS_DB_NAME: ${DATABASE}
+      WORDPRESS_DB_USER: ${DATABASEUSER}
+      WORDPRESS_DB_PASSWORD: ${PASSWORD}
 volumes:
   wpdata:

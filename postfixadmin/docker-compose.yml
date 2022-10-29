@@ -1,0 +1,26 @@
+version: '3'
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb:10.9.3
+    restart: unless-stopped
+    volumes:
+      - maildb:/var/lib/mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: ${ROOTPASSWORD}
+      MARIADB_DATABASE: ${DATABASE}
+      MARIADB_USER: ${DATABASEUSER}
+      MARIADB_PASSWORD: ${PASSWORD}
+  postfixadmin:
+    container_name: postfixadmin
+    image: postfixadmin
+    ports:
+      - 8000:80
+    environment:
+      POSTFIXADMIN_DB_TYPE: mysqli
+      POSTFIXADMIN_DB_HOST: mariadb
+      POSTFIXADMIN_DB_USER: ${DATABASEUSER}
+      POSTFIXADMIN_DB_PASSWORD: ${PASSWORD}
+      POSTFIXADMIN_DB_NAME: ${DATABASE}
+volumes:
+  maildb:
