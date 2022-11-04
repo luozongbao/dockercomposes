@@ -1,5 +1,8 @@
 # how to use this compose file
-1. run compose up -d
+1. run compose up
+```
+docker compose up -d
+```
 2. make sure 'src' is clean by delete the 'public' folder in 'src' folder.
 3. run create project command using 'docker compose run'
 ```
