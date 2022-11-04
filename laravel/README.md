@@ -14,7 +14,7 @@ docker compose run --rm composer composer create-project laravel/laravel .
 ```
 docker compose run --rm npm install
 ```
-7 run artisan migrate
+7. run artisan migrate
 ```
 docker compose run --rm artisan migrate
 ```
