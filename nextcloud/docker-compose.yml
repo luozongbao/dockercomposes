@@ -1,34 +1,58 @@
 version: '3'
 
 volumes:
-  data:
+  nextcloud:
+  database:
 
 services:
   nextcloud:
-    image: nextcloud:23.0
+    image: nextcloud:25.0.11-apache
     container_name: nextcloud
     restart: unless-stopped
-    depends_on: 
-      - mariadb
+    depends_on:
+      - database
+      - redis
+    volumes:
+      - nextcloud:/var/www/html
     ports:
       - 80:80
+      - 443:443
     environment:
-      MYSQL_HOST: mariadb
-      MYSQL_DATABASE: $DB_DATABASE
+      REDIS_HOST: redis
+      MYSQL_HOST: database
+      MYSQL_DATABASE: $DB_NAME
       MYSQL_USER: $DB_USER
-      MYSQL_PASSWORD: $DB_PASSWORD
-      NEXTCLOUD_ADMIN_USER: $ADMIN_USER
-      NEXTCLOUD_ADMIN_PASSWORD: $ADMIN_PASSWORD
-  
-  mariadb:
-    image: mariadb:10.10
-    container_name: mariadb
+      MYSQL_PASSWORD: $DB_PASS
+      NEXTCLOUD_ADMIN_USER: admin
+      NEXTCLOUD_ADMIN_PASSWORD: P@ssw0rd4cloud
+      NEXTCLOUD_TRUSTED_DOMAINS: cloud.lorwongam.com lorwongam.com
+      SMTP_HOST: mailpit.lorwongam.com
+      SMTP_PORT: 1025
+      SMTP_NAME: MAIL
+      SMTP_PASSWORD: MAILP@ssw0rd
+      MAIL_FROM_ADDRESS: nextcloud@lorwongam.com
+  database:
+    image: mariadb:11-jammy
+    container_name: database
     restart: unless-stopped
     volumes:
-      - data:/var/lib/mysql
+      - database:/var/lib/mysql
     environment:
       MARIADB_ROOT_PASSWORD: r00tP@ssw0rd
-      MARIADB_DATABASE: $DB_DATABASE
+      MARIADB_DATABASE: $DB_NAME
       MARIADB_USER: $DB_USER
-      MARIADB_PASSWORD: $DB_PASSWORD
-
+      MARIADB_PASSWORD: $DB_PASS
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: unless-stopped
+  cron:
+    image: nextcloud:25.0.11-apache
+    restart: unless-stopped
+    container_name: cron
+    volumes:
+      - nextcloud:/var/www/html
+    entrypoint: /cron.sh
+    depends_on:
+      - redis
+      - database
